@@ -1,24 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./index.css";
 
 function App() {
+  const [profile, SetProfile] = useState([]);
+
+  useEffect(() => {
+    const Profiles = async () => {
+      const response = await fetch("https://api.github.com/users");
+      const data = await response.json();
+      SetProfile(data);
+      console.log(data);
+    };
+    Profiles();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="container">
+        <h1>Github Profiles</h1>
+        <div className="row">
+          {profile.map((p) => {
+            return (
+              <div class="card" style={{width : "18rem" , margin : "20px"}}>
+                <img src={p.avatar_url} class="card-img-top" alt="..." />
+                <div class="card-body">
+                  <p class="card-text">
+                      {p.login}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </>
   );
 }
 
